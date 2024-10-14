@@ -12,6 +12,7 @@ void main() {
       environmentId: '3e219b76-dcf1-40ab-aad6-652c4dfab4cc',
       appLogoUrl: 'https://demo.dynamic.xyz/favicon-32x32.png',
       appName: 'Dynamic Flutter Demo',
+      redirectUrl: 'flutterdemo://',
       logLevel: LoggerLevel.debug, //the intended logger level
     ),
   );
@@ -84,7 +85,24 @@ class _MyHomePageState extends State<MyHomePage> {
                       return authToken != null
                           ? Content(authToken: authToken)
                           // Show Dynamic UI for sign in
-                          : const LoginButton();
+                          : Column(
+                              children: [
+                                const LoginButton(),
+                                const SizedBox(
+                                  height: 16,
+                                ),
+                                OutlinedButton(
+                                  onPressed: () async => await DynamicSDK
+                                      .instance.auth.social
+                                      .connect(
+                                    provider: SocialProvider.google,
+                                  ),
+                                  child: const Text(
+                                    'Continue with Google',
+                                  ),
+                                ),
+                              ],
+                            );
                     },
                   ),
                 ],
